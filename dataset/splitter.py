@@ -9,13 +9,17 @@ JSON_PATH = "./annotations.json"
 if __name__ == "__main__":
     with open(JSON_PATH) as f:
         json_file = json.load(f)
-    
+
     keys = list(json_file.keys())
 
-    train_keys, test_keys = random_split(keys, [TRAIN_PERCENTAGE, (1-TRAIN_PERCENTAGE)])
-    
-    train_keys, val_keys = random_split(train_keys, [TRAIN_PERCENTAGE, VALIDATION_PERCENTAGE])
-    
+    train_keys, test_keys = random_split(
+        keys, [TRAIN_PERCENTAGE, (1 - TRAIN_PERCENTAGE)]
+    )
+
+    train_keys, val_keys = random_split(
+        train_keys, [TRAIN_PERCENTAGE, VALIDATION_PERCENTAGE]
+    )
+
     # Control
     for key in test_keys:
         if key in val_keys or key in train_keys:
@@ -27,7 +31,7 @@ if __name__ == "__main__":
         json_file[key]["split"] = "test"
     for key in val_keys:
         json_file[key]["split"] = "val"
-        
+
     # verify that all the json has a split key
     for key in json_file.keys():
         assert "split" in json_file[key], f"Key {key} does not have a split key"

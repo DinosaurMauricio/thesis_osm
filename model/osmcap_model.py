@@ -17,7 +17,7 @@ from .perceiver_resampler import PerceiverResampler
 
 from peft import prepare_model_for_kbit_training, get_peft_model
 
-from dataset.constants import MLP, CROSS_ATTN
+from utils.constants import MLP, CROSS_ATTN
 
 
 class OSMCAP(PreTrainedModel):
@@ -206,9 +206,6 @@ class OSMCAP(PreTrainedModel):
             param.data = param.data.to(torch.float32)
             param.requires_grad = True
 
-    def insert_adapters(self, lora_config):
-        self.language.llm = get_peft_model(self.language.llm, lora_config)
-
     def forward(
         self,
         images: torch.Tensor,
@@ -226,6 +223,8 @@ class OSMCAP(PreTrainedModel):
         device = visual_features.device
         images_mask = images_mask.repeat(1, L)
 
+        # if we dont use the sentence transfromer we need use the llm
+        # to process the embeddings else use a frozen sentence transformer
         if not self.config.trainer.sentence_embedding.enabled:
             # Get the embeddings of the osm tokens
             osm_features = self.language._get_input_embeddings(osm_content)

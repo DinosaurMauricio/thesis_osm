@@ -6,14 +6,14 @@ from .config.osmcap import OSMCAP_Config
 from .cross_attention import ModifiedLMBlock
 from typing import List
 
-from dataset.constants import IGNORE_INDEX, MLP, CROSS_ATTN
+from utils.constants import CROSS_ATTN
 
 
 class BaseLanguageModel(nn.Module, ABC):
     def __init__(self, config: OSMCAP_Config):
         super().__init__()
         self.config = config
-        self.llm = self._initialize_model(pretrained=True)
+        self.llm = self._initialize_model()
         self.llm.resize_token_embeddings(config.vocab_size)
 
         self.dropout = nn.Dropout(p=config.transformations.dropout.p)
@@ -28,7 +28,7 @@ class BaseLanguageModel(nn.Module, ABC):
             self.dim_features = config.projection.cross_attention.dim_features
 
             self._add_gated_cross_attention()
-            
+
         if config.llm.freeze:
             self._freeze_llm()
 
@@ -68,7 +68,7 @@ class BaseLanguageModel(nn.Module, ABC):
         # Freeze everything
         for param in self.parameters():
             param.requires_grad = False
-            
+
     def _unfreeze_cross_attn(self):
         # If cross attention is enabled, don't freeze cross_attn layers
         if self.config.projection.type == CROSS_ATTN:
@@ -77,6 +77,19 @@ class BaseLanguageModel(nn.Module, ABC):
                     # Cast the param to dtype float32 before unfreezing (training is better in float32)
                     param.data = param.data.to(torch.float32)
                     param.requires_grad = True
+
+    def _preprocess_features(self, features, features_attn_mask, max_length):
+        """
+        Ensure that the number of features does not exceed the maximum
+        allowed length from the config. If necessary, truncate both
+        features and their attention mask to avoid dimension mismatches
+        during training or generation.
+        """
+        if features.shape[1] > max_length:
+            features = features[:, :max_length]
+            features_attn_mask = features_attn_mask[:, :max_length]
+
+        return features, features_attn_mask
 
     def forward(
         self,
@@ -97,17 +110,19 @@ class BaseLanguageModel(nn.Module, ABC):
         """
 
         # Cut the osm data to a predefined threshold
-        if features.shape[1]>self.config.trainer.max_features_length:
-            features = features[:, : self.config.trainer.max_features_length]
-            features_attn_mask = features_attn_mask[:, :self.config.trainer.max_features_length]
-            
+        features, features_attn_mask = self._preprocess_features(
+            features, features_attn_mask, self.config.trainer.max_features_length
+        )
+
         if self.config.transformations.dropout.enabled:
             features = self.dropout(features)
 
         # Condition the model with the features
         for xattn in self.modified_layers:
-            xattn.condition(features=features, mask=features_attn_mask, xattn_layer_past=None)
-                
+            xattn.condition(
+                features=features, mask=features_attn_mask, xattn_layer_past=None
+            )
+
         # Forward to the llm
         outputs = self.llm(
             input_ids=input_ids,
@@ -136,23 +151,24 @@ class BaseLanguageModel(nn.Module, ABC):
             bos_token_id=self.config.llm.bos_token_id,
             eos_token_id=self.config.llm.eos_token_id,
             pad_token_id=self.config.llm.pad_token_id,
-            max_new_tokens=max_new_tokens
+            max_new_tokens=max_new_tokens,
         )
-        
+
         B, _, _ = features.shape
-        
+
         start_word_ids = start_word_id.repeat(B, 1)
         attention_mask = torch.ones((B, 1), device=features.device)
-        
-        if features.shape[1]>self.config.trainer.max_features_length:
-            features = features[:, : self.config.trainer.max_osm_length]
-            features_attn_mask = features_attn_mask[:, :self.config.trainer.max_osm_length]
+
+        features, features_attn_mask = self._preprocess_features(
+            features, features_attn_mask, self.config.trainer.max_osm_length
+        )
 
         # Condition the model with the features
         for xattn in self.modified_layers:
-            xattn.condition(features=features, mask=features_attn_mask, xattn_layer_past=None)
-                
-        # Call the generate function
+            xattn.condition(
+                features=features, mask=features_attn_mask, xattn_layer_past=None
+            )
+
         outputs = self.llm.generate(
             input_ids=start_word_ids,
             attention_mask=attention_mask,

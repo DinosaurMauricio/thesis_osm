@@ -4,6 +4,10 @@ import torch.distributed as dist
 import torch.multiprocessing as mp
 
 
+# Utilities for setting up and running PyTorch Distributed Data Parallel (DDP)
+# Designed for multi-GPU training
+
+
 def setup(rank, world_size):
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = "12355"

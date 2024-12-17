@@ -17,20 +17,18 @@ from utils.config import (
 from utils.dataset import create_dataloaders, load_datasets
 from utils.general_utils import tokens_to_text
 from torchvision.transforms import functional as F
-from dataset.collate import CustomCollateFn
+from utils.collate import CustomCollateFn
 
 from utils.model import evaluate_metrics
 
-DEVICE = "cuda:1"
+# THIS IS JUST A QUICK STREAMLIT APP TO BE ABLE TO SEE THE RESULTS MORE QUICK
 
+DEVICE = "cuda:1"
 PATH_PROJECT = os.path.dirname(os.path.abspath(__file__))
 ANNOTATIONS_JSON_PATH = "annotations.json"
-
 CHECKPOINT_FOLDER = "best_model"
 CHECKPOINT_MODEL = "best_model.pth"
-
-TEST_DATASET = "train" # Can be "test", "train" or "val"
-
+TEST_DATASET = "train"  # Can be "test", "train" or "val"
 START_WORD = "gen"
 
 
@@ -48,7 +46,12 @@ def calculate_text_metrics(split=""):
                     all_texts.append(text)
         else:
             for text in data["general_annot"]:
-                all_texts.append(text.replace(".", "").replace(",", "").replace(";", "").replace(":", ""))
+                all_texts.append(
+                    text.replace(".", "")
+                    .replace(",", "")
+                    .replace(";", "")
+                    .replace(":", "")
+                )
 
     all_words = [word.lower() for text in all_texts for word in text.split()]
 
@@ -94,7 +97,7 @@ def prev():
 
 def initialize_config():
     set_cuda_settings()
-    config_file_to_load =  os.path.join("trainings", CHECKPOINT_FOLDER, "config.yaml")
+    config_file_to_load = os.path.join("trainings", CHECKPOINT_FOLDER, "config.yaml")
     config = load_config(PATH_PROJECT, config_file_to_load)
     set_device_settings(config)
 
@@ -109,27 +112,42 @@ def load_model_and_tokenizer(config):
     tokenizer = setup_tokenizer(llm.path, config.arg_llm)
 
     osmcap_config = initialize_model_config(
-        config, config.arg_llm, config.arg_vision, False, tokenizer, config.device, llm, vision
+        config,
+        config.arg_llm,
+        config.arg_vision,
+        False,
+        tokenizer,
+        config.device,
+        llm,
+        vision,
     )
 
-    image_osm_sim = initialize_model_config(config, "gpt", "clip", False, tokenizer, config.device, config.llm_models["gpt"], config.vision_model["clip"])
-    
-    model = load_model(osmcap_config, config, img_osm_config=image_osm_sim, master_process=True)
+    image_osm_sim = initialize_model_config(
+        config,
+        "gpt",
+        "clip",
+        False,
+        tokenizer,
+        config.device,
+        config.llm_models["gpt"],
+        config.vision_model["clip"],
+    )
 
+    model = load_model(
+        osmcap_config, config, img_osm_config=image_osm_sim, master_process=True
+    )
 
     model.load_state_dict(
         torch.load(
             os.path.join(
-                PATH_PROJECT,
-                "trainings",
-                CHECKPOINT_FOLDER,
-                CHECKPOINT_MODEL
+                PATH_PROJECT, "trainings", CHECKPOINT_FOLDER, CHECKPOINT_MODEL
             ),
-            map_location=DEVICE
+            map_location=DEVICE,
         )
     )
     model.eval()
     return model, tokenizer
+
 
 def _load_dataset():
     dataset_config = config.dataset[config.arg_dataset]
@@ -145,25 +163,28 @@ def _load_dataset():
         inference=True,
         tokenizer=tokenizer,
         splits=(TEST_DATASET,),
-        **osm_extra_params
+        **osm_extra_params,
     )[TEST_DATASET]
 
-    custom_collate_fn = CustomCollateFn(sentence_embedding=config.trainer.sentence_embedding, inference=True)    
-        
+    custom_collate_fn = CustomCollateFn(
+        sentence_embedding=config.trainer.sentence_embedding, inference=True
+    )
+
     dataloader = create_dataloaders(
         {
             TEST_DATASET: (dataset, 32),
         },
         False,
         None,
-        collate_fn=custom_collate_fn)[TEST_DATASET]
-    
+        collate_fn=custom_collate_fn,
+    )[TEST_DATASET]
+
     return dataloader
 
 
 def load_generated_captions():
     results = []
-    
+
     metrics, results = evaluate_metrics(
         model=model,
         dataloader=dataloader,
@@ -174,7 +195,7 @@ def load_generated_captions():
         start_word=START_WORD,
         return_results=True,
     )
-    
+
     for i, val in enumerate(metrics[0]):
         print(f"Bleu {i+1}: {val}")
 
@@ -211,7 +232,7 @@ with st.spinner("Generating captions..."):
     tokenizer = st.session_state["tokenizer"]
 
     decode_tokens = partial(tokens_to_text, tokenizer=tokenizer)
-    
+
     if "dataloader" not in st.session_state:
         st.session_state["dataloader"] = _load_dataset()
 
@@ -232,7 +253,7 @@ with cols[2]:
     st.button("Next ➡️", on_click=next, use_container_width=True)
 with cols[0]:
     st.button("⬅️ Previous", on_click=prev, use_container_width=True)
-    
+
 prediction_result_sentence = results[st.session_state.counter]["prediction"]
 image_key = results[st.session_state.counter]["image_key"]
 
@@ -251,9 +272,9 @@ st.write(
 )
 
 st.write("**Ground Truth sentence**\n")
-for gt in results[st.session_state.counter]['gts']:
+for gt in results[st.session_state.counter]["gts"]:
     st.write(gt)
-    
+
 st.write(f"**OSM Content**: {results[st.session_state.counter]['osm_content']}")
 # st.write("Raw Data:")
 # st.write(results[st.session_state.counter])

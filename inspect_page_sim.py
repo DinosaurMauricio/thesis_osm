@@ -4,8 +4,8 @@ import streamlit as st
 
 from tqdm import tqdm
 
-from dataset.OSMSimilarity import OSMSentenceTransformerSimilarityDataset
-from dataset.collate import custom_collate_sim_fn
+from dataset.OSMSimilarity import OSMSimilarityDataset
+from utils.collate import custom_collate_sim_fn
 from model.image_osm_sim import ImageOSMSim
 from utils.config import initialize_model_config, load_config
 from transformers import AutoTokenizer
@@ -14,6 +14,7 @@ from torchvision.transforms import functional as F
 
 from utils.dataset import create_dataloaders
 
+# NOTE: THIS IS JUST A QUICK STREAMLIT APP TO BE ABLE TO SEE THE RESULTS MORE QUICK
 
 PATH_PROJECT = os.path.dirname(os.path.abspath(__file__))
 # Right now this is hardcoded as only using the gpt and clip model, haven't implemented the other models
@@ -120,7 +121,7 @@ def load_generated_captions():
 def load_dataset():
     dataset_config = config.dataset[DATASET]
 
-    dataset = OSMSentenceTransformerSimilarityDataset(
+    dataset = OSMSimilarityDataset(
         tokenizer, dataset_config.path, "val", **config.trainer
     )
 
@@ -129,7 +130,7 @@ def load_dataset():
 
 def load_dataloader():
     dataset = load_dataset()
-    
+
     val_dataloader = create_dataloaders(
         {
             "val": (dataset, config.trainer.batch_size),

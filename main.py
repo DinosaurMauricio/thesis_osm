@@ -10,7 +10,8 @@ from utils.general_utils import (
     print_study_statistics,
     get_scheduler,
     save_config,
-    update_metric
+    update_metric,
+    save_model,
 )
 from utils.logging import initialize_logging
 from utils.config import (
@@ -26,7 +27,7 @@ from utils.config import (
     create_and_run_study,
 )
 from utils.dataset import create_dataloaders, load_datasets
-from utils.model import save_model, train, evaluate
+from utils.model import train, evaluate
 from distributed_training.ddp_setup import (
     setup,
     cleanup,
@@ -35,7 +36,7 @@ from distributed_training.ddp_setup import (
 )
 from omegaconf import OmegaConf
 from torch.optim import AdamW
-from dataset.collate import CustomCollateFn
+from utils.collate import CustomCollateFn
 
 from transformers.utils import logging
 
@@ -74,7 +75,10 @@ parser.add_argument(
     "--save", type=str, default="best_model", help="Name of the model to save"
 )
 parser.add_argument(
-    "--similarity_model", type=str, default= "best_model", help="Name of the model to load on the similarity model"
+    "--similarity_model",
+    type=str,
+    default="best_model",
+    help="Name of the model to load on the similarity model",
 )
 parser.add_argument(
     "--threshold",
@@ -142,11 +146,13 @@ def main(rank, trial=None):
     allow_config_save = True
 
     config, trial = initialize_env(args, master_process, trial)
-    
+
     evaluate_bleu = config.trainer.evaluate_bleu
-    
-    if config.trainer.metric_to_monitor=="bleu4":
-        assert evaluate_bleu is True, "You must calculate the bleu if you want to monitor it!"
+
+    if config.trainer.metric_to_monitor == "bleu4":
+        assert (
+            evaluate_bleu is True
+        ), "You must calculate the bleu if you want to monitor it!"
 
     output_model_path = get_complete_path(os.path.join(config.output_dir, args.save))
 
@@ -178,15 +184,19 @@ def main(rank, trial=None):
         llm,
         vision_model,
         rank,
-    ) 
+    )
 
     image_osm_config = None
     if osmcap_config.trainer.image_osm_similarity.enabled:
         # TODO: Refactor this to be more dynamic, right now is a quick solution to get the path
-        osmcap_config.img_osm_path = os.path.join(PATH_PROJECT, config.similarity_output_dir, args.similarity_model)
+        osmcap_config.img_osm_path = os.path.join(
+            PATH_PROJECT, config.similarity_output_dir, args.similarity_model
+        )
         similarity_config = load_config(
             PATH_PROJECT,
-            os.path.join(config.similarity_output_dir, args.similarity_model, "config.yaml"),
+            os.path.join(
+                config.similarity_output_dir, args.similarity_model, "config.yaml"
+            ),
         )
 
         llm = config.llm_models["gpt"]
@@ -209,7 +219,7 @@ def main(rank, trial=None):
         **config.trainer,
         **config.transformations,
     }
-    
+
     datasets = load_datasets(
         dataset_name=args.dataset.lower(),
         dataset_config=dataset_config,
@@ -226,12 +236,14 @@ def main(rank, trial=None):
     )
 
     training_datasets = {
-        "train": (train_dataset, config.trainer.batch_size), 
+        "train": (train_dataset, config.trainer.batch_size),
         "val": (val_dataset, 32),
-        "test": (test_dataset, 32)                            
+        "test": (test_dataset, 32),
     }
 
-    custom_collate_fn = partial(CustomCollateFn, sentence_embedding=config.trainer.sentence_embedding)
+    custom_collate_fn = partial(
+        CustomCollateFn, sentence_embedding=config.trainer.sentence_embedding
+    )
 
     dataloaders = create_dataloaders(
         training_datasets,
@@ -241,8 +253,12 @@ def main(rank, trial=None):
         collate_fn=custom_collate_fn(inference=False),
     )
 
-    trainloader, valloader, testloader = dataloaders["train"], dataloaders["val"], dataloaders["test"]
-    
+    trainloader, valloader, testloader = (
+        dataloaders["train"],
+        dataloaders["val"],
+        dataloaders["test"],
+    )
+
     if evaluate_bleu:
         dataset_inference = load_datasets(
             dataset_name=args.dataset.lower(),
@@ -258,11 +274,11 @@ def main(rank, trial=None):
             dataset_inference["val"],
             dataset_inference["test"],
         )
-        
+
         inference_datasets = {
-            "train": (train_dataset_inference, config.trainer.batch_size), 
+            "train": (train_dataset_inference, config.trainer.batch_size),
             "val": (val_dataset_inference, 32),
-            "test": (test_dataset_inference, 32)                            
+            "test": (test_dataset_inference, 32),
         }
 
         inference_dataloaders = create_dataloaders(
@@ -283,7 +299,7 @@ def main(rank, trial=None):
         trainloader_inference = None
         valloader_inference = None
         testloader_inference = None
-    
+
     if master_process:
         print(f"Using dataset: {args.dataset}")
 
@@ -306,9 +322,9 @@ def main(rank, trial=None):
 
     if master_process:
         print(f"Using type {args.scheduler} scheduler")
-    
-    best_metric = 1000 if config.trainer.metric_to_monitor=="perplexity" else 0
-    
+
+    best_metric = 1000 if config.trainer.metric_to_monitor == "perplexity" else 0
+
     optuna_early_stopping_counter = 0
     for epoch in range(config.trainer.epochs):
         avg_train_perplexity, metrics_train = train(
@@ -329,14 +345,19 @@ def main(rank, trial=None):
             if evaluate_bleu:
                 print(f"Bleu score on Train {metrics_train[0]}")
                 print(f"Compatibility metric on Train {metrics_train[1]}")
-        
+
         if args.log and master_process:
             wandb.log({"train_perplexity": avg_train_perplexity}, commit=False)
             if evaluate_bleu:
-                wandb.log({"train_bleu_4": metrics_train[0][-1], "train_comp_score": metrics_train[1]}, commit=False)
+                wandb.log(
+                    {
+                        "train_bleu_4": metrics_train[0][-1],
+                        "train_comp_score": metrics_train[1],
+                    },
+                    commit=False,
+                )
 
         avg_val_perplexity, metrics_val = evaluate(
-
             epoch=epoch,
             dataloader_eval=valloader,
             dataloader_eval_inference=valloader_inference,
@@ -344,7 +365,7 @@ def main(rank, trial=None):
             distributedgpu=args.distributedgpu,
             master_process=master_process,
             start_word=config.trainer.start_word,
-            split="val"
+            split="val",
         )
 
         if master_process:
@@ -352,26 +373,35 @@ def main(rank, trial=None):
             if evaluate_bleu:
                 print(f"Bleu score on Val {metrics_val[0]}")
                 print(f"Compatibility metric on Val {metrics_val[1]}")
-                
+
         if args.log and master_process:
             wandb.log({"eval_perplexity": avg_val_perplexity}, commit=False)
             if evaluate_bleu:
-                wandb.log({"eval_bleu_4": metrics_val[0][-1], "val_comp_score": metrics_val[1]})
-        
-        metric = avg_val_perplexity if config.trainer.metric_to_monitor == "perplexity" else metrics_val[0][-1]
+                wandb.log(
+                    {
+                        "eval_bleu_4": metrics_val[0][-1],
+                        "val_comp_score": metrics_val[1],
+                    }
+                )
+
+        metric = (
+            avg_val_perplexity
+            if config.trainer.metric_to_monitor == "perplexity"
+            else metrics_val[0][-1]
+        )
         # - If using optuna we don't save the model, because we are not sure if it is the best one
         # we are only interested in hyperparameter tuning
         # - Only save in master process
         if master_process and not args.optuna:
-            if update_metric(metric=metric, best_metric=best_metric, minimize=config.trainer.metric_to_monitor == "perplexity"):
-                print(
-                    f"Saving best model, metric went from {best_metric} to {metric}"
-                )
-                
+            if update_metric(
+                metric=metric,
+                best_metric=best_metric,
+                minimize=config.trainer.metric_to_monitor == "perplexity",
+            ):
+                print(f"Saving best model, metric went from {best_metric} to {metric}")
+
                 save_path = os.path.join(output_model_path, "best_model.pth")
-                save_model(
-                    model, save_path, master_process, args.distributedgpu
-                )
+                save_model(model, save_path, master_process, args.distributedgpu)
 
                 if allow_config_save:
                     allow_config_save = False
@@ -383,21 +413,21 @@ def main(rank, trial=None):
 
                     if master_process:
                         print(f"Saved config!")
-                
-                # Save also the epoch checkpoint so that is not getting overwritten 
-                save_path = os.path.join(output_model_path, "epoch_"+str(epoch)+".pth")
-                save_model(
-                    model, save_path, master_process, args.distributedgpu
+
+                # Save also the epoch checkpoint so that is not getting overwritten
+                save_path = os.path.join(
+                    output_model_path, "epoch_" + str(epoch) + ".pth"
                 )
+                save_model(model, save_path, master_process, args.distributedgpu)
                 # Update metric
                 best_metric = metric
-            
+
             else:
                 if config.trainer.save_every_epoch:
-                    save_path = os.path.join(output_model_path, "epoch_"+str(epoch)+".pth")
-                    save_model(
-                        model, save_path, master_process, args.distributedgpu
+                    save_path = os.path.join(
+                        output_model_path, "epoch_" + str(epoch) + ".pth"
                     )
+                    save_model(model, save_path, master_process, args.distributedgpu)
 
         if args.optuna:
             trial.report(metric, epoch)
@@ -407,7 +437,11 @@ def main(rank, trial=None):
                 raise optuna.exceptions.TrialPruned()
 
             # Early stopping for optuna, this is for the overfitting and quicken up the trials
-            if update_metric(metric=metric, best_metric=best_metric, minimize=config.trainer.metric_to_monitor == "val_loss"):
+            if update_metric(
+                metric=metric,
+                best_metric=best_metric,
+                minimize=config.trainer.metric_to_monitor == "val_loss",
+            ):
                 best_metric = metric
                 optuna_early_stopping_counter = 0
             else:
@@ -418,11 +452,11 @@ def main(rank, trial=None):
                 raise optuna.exceptions.TrialPruned()
 
     # No need to evaluate the test set if we are using optuna because theres no saved model
-
-    
     if not args.optuna:
         # Evaluate the best model
-        model.load_state_dict(torch.load(os.path.join(output_model_path, "best_model.pth")))
+        model.load_state_dict(
+            torch.load(os.path.join(output_model_path, "best_model.pth"))
+        )
 
         avg_test_perplexity, metrics_test = evaluate(
             epoch=epoch,
@@ -440,11 +474,16 @@ def main(rank, trial=None):
             if evaluate_bleu:
                 print(f"Bleu score on Test {metrics_test[0]}")
                 print(f"Compatibility metric on Test {metrics_test[1]}")
-        
+
         if args.log and master_process:
             wandb.log({"test_perplexity": avg_test_perplexity})
             if evaluate_bleu:
-                wandb.log({"test_bleu_4": metrics_test[0][-1], "test_comp_score": metrics_test[1]})
+                wandb.log(
+                    {
+                        "test_bleu_4": metrics_test[0][-1],
+                        "test_comp_score": metrics_test[1],
+                    }
+                )
 
     if args.log and master_process:
         wandb.finish()

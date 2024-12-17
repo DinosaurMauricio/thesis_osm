@@ -1,6 +1,7 @@
-from transformers import GPT2LMHeadModel, AutoConfig
+from transformers import GPT2LMHeadModel
 from .base_language_model import BaseLanguageModel
 from .config.osmcap import OSMCAP_Config
+
 
 class GPT2Model(BaseLanguageModel):
     """
@@ -10,18 +11,9 @@ class GPT2Model(BaseLanguageModel):
     def __init__(self, config: OSMCAP_Config):
         super().__init__(config)
 
-    def _initialize_model(self, pretrained=True):
+    def _initialize_model(self):
         kwargs = self._get_model_kwargs()
-        if pretrained:
-            return GPT2LMHeadModel.from_pretrained(self.config.llm.path, **kwargs)
-        else:
-            config = AutoConfig.from_pretrained(
-                "gpt2",
-                n_layer=2,
-                n_head=8,
-                **kwargs
-            )
-            return GPT2LMHeadModel(config)
+        return GPT2LMHeadModel.from_pretrained(self.config.llm.path, **kwargs)
 
     def _add_gated_cross_attention(self):
         self._init_layers(self.llm.transformer.h)
@@ -47,4 +39,3 @@ class GPT2Model(BaseLanguageModel):
 
     def _get_input_embeddings(self, input_ids):
         return self.llm.transformer.get_input_embeddings()(input_ids)
-        

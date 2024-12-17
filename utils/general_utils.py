@@ -1,5 +1,6 @@
 import random
 import os
+import torch
 import string
 
 from omegaconf import OmegaConf
@@ -8,7 +9,7 @@ from pycocoevalcap.bleu.bleu import Bleu
 from torch.optim.lr_scheduler import OneCycleLR, ConstantLR
 from transformers import get_linear_schedule_with_warmup
 
-from dataset.constants import POSITION_MAPPING
+from utils.constants import POSITION_MAPPING
 
 
 def random_choice(prob: float = 0.5):
@@ -144,7 +145,7 @@ def clean_content(content):
                 else [remove_punctuation(value)]
             )
             temp_clean_content.extend(value_tokens)
-        
+
         clean_osm_content.append(temp_clean_content)
 
     return clean_osm_content
@@ -185,7 +186,6 @@ def save_config(data, path):
     OmegaConf.save(data, path)
 
 
-# TODO: After merge check on this method as im unsure if still used
 def tokenize_text(text, tokenizer):
     tokenized_text = tokenizer(
         text,
@@ -206,3 +206,42 @@ def modify_position_value(content):
             element["position"] = POSITION_MAPPING[element["position"]]
 
     return content
+
+
+def save_model(model, output_dir, master_process=False, using_distributedgpu=False):
+    # Save model for Distributed Data Parallel (DDP) training
+    if using_distributedgpu and master_process:
+        torch.save(
+            # Reminder:
+            # - Use model.state_dict() when saving checkpoints for resuming DDP training.
+            # - Use model.module.state_dict() for saving models intended for testing.
+            model.module.state_dict(),
+            output_dir,
+        )
+    else:
+        # Save model for single GPU training
+        torch.save(model.state_dict(), output_dir)
+
+
+def filter_osm_content(content, blacklist, filter_name_keys=True):
+    if not content:
+        return None
+
+    filtered_content = []
+
+    for item in content:
+        # Create a new dictionary excluding blacklisted keys with value 0
+        filtered_item = {
+            key: value
+            for key, value in item.items()
+            if key not in blacklist
+            or blacklist[key] == 1
+            or (blacklist[key] == 2 and not filter_name_keys)
+        }
+
+        if not (
+            len(filtered_item) == 1 and "position" in filtered_item.keys()
+        ):  # Removing objects where only the position is left!
+            filtered_content.append(filtered_item)
+
+    return filtered_content

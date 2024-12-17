@@ -1,24 +1,22 @@
-from omegaconf import OmegaConf
-import torch
+import wandb
 import argparse
 import torch.optim as optim
 import os
 
+from omegaconf import OmegaConf
 from transformers.utils import logging
 from transformers import AutoTokenizer
 from torch.optim.lr_scheduler import ConstantLR
-import wandb
 
-from dataset.OSMSimilarity import OSMSentenceTransformerSimilarityDataset
+from dataset.OSMSimilarity import OSMSimilarityDataset
 
-
-from dataset.collate import custom_collate_sim_fn
+from utils.collate import custom_collate_sim_fn
 from model.image_osm_sim import ImageOSMSim
 from utils.config import load_config, initialize_model_config, set_seed
 from utils.dataset import create_dataloaders
-from utils.general_utils import create_directory_if_not_exists, save_config
+from utils.general_utils import create_directory_if_not_exists, save_config, save_model
 from utils.logging import initialize_logging
-from utils.model import save_model, train_sim, evaluate_sim
+from utils.model_similarity import train_sim, evaluate_sim
 
 logging.set_verbosity(
     40
@@ -93,12 +91,8 @@ osmcap_config = initialize_model_config(
     config, LLM, VISION, False, tokenizer, config.device, llm, vision_model
 )
 
-dataset_train = OSMSentenceTransformerSimilarityDataset(
-    tokenizer, PATH, "train", **config_inputs
-)
-dataset_val = OSMSentenceTransformerSimilarityDataset(
-    tokenizer, PATH, "val", **config_inputs
-)
+dataset_train = OSMSimilarityDataset(tokenizer, PATH, "train", **config_inputs)
+dataset_val = OSMSimilarityDataset(tokenizer, PATH, "val", **config_inputs)
 
 
 dataloaders_dict = create_dataloaders(

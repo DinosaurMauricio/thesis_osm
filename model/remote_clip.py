@@ -5,9 +5,10 @@ import clip
 import torchvision.transforms as T
 from torchvision.transforms import InterpolationMode
 
+
 class RemoteCLIP(torch.nn.Module):
     """
-    Simple wrapper around a CLIPVision pretrained model.
+    Simple wrapper around a RemoteCLIP pretrained model.
     It outputs the activations of the last layer (without the CLS token activation).
     """
 
@@ -15,7 +16,7 @@ class RemoteCLIP(torch.nn.Module):
         super().__init__()
         rank = getattr(config, "rank", None)
         device = getattr(config, "device", None)
-        
+
         self.use_only_cls_token = config.vision.use_only_cls_token
 
         model_device = rank if rank is not None else device
@@ -48,13 +49,18 @@ class RemoteCLIP(torch.nn.Module):
         ckpt = torch.load(checkpoint_path, map_location=model_device)
 
         self.model.load_state_dict(ckpt)
-        
+
     def _build_transform(self, n_px):
-        return T.Compose([
-            T.Resize(n_px, interpolation=InterpolationMode.BICUBIC),
-            T.CenterCrop(n_px),
-            T.Normalize((0.48145466, 0.4578275, 0.40821073), (0.26862954, 0.26130258, 0.27577711)),
-        ])
+        return T.Compose(
+            [
+                T.Resize(n_px, interpolation=InterpolationMode.BICUBIC),
+                T.CenterCrop(n_px),
+                T.Normalize(
+                    (0.48145466, 0.4578275, 0.40821073),
+                    (0.26862954, 0.26130258, 0.27577711),
+                ),
+            ]
+        )
 
     def _freeze_vision(self):
         self.model.eval()
@@ -72,9 +78,9 @@ class RemoteCLIP(torch.nn.Module):
 
         transformed_images = self.preprocess(images)
         embeddings = self.visual_clip(transformed_images)
-        
+
         return embeddings
-        
+
     def visual_clip(self, x: torch.Tensor):
         x = self.model.visual.conv1(
             x.type((self.model.dtype))
@@ -100,9 +106,9 @@ class RemoteCLIP(torch.nn.Module):
         x = x.permute(1, 0, 2)  # LND -> NLD
 
         x = self.model.visual.ln_post(x)
-        
+
         if self.use_only_cls_token:
             x = x[:, 0, :]
             x = x.unsqueeze(1)
-            
+
         return x

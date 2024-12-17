@@ -1,7 +1,6 @@
-import json
 import os
 
-from typing import List, Dict
+from typing import Dict
 from PIL import Image
 from sentence_transformers import SentenceTransformer
 from torch.utils.data import Dataset
@@ -16,10 +15,11 @@ from utils.general_utils import (
     tokenize_text,
     unique_objects,
 )
-from utils.model import filter_osm_content
+from utils.general_utils import filter_osm_content
+from utils.dataset import load_osm_content, load_data
 
 
-class OSMSentenceTransformerSimilarityDataset(Dataset):
+class OSMSimilarityDataset(Dataset):
     """
     This dataset loads the OSM data with the corresponding image path, general caption and osm caption.
     """
@@ -44,15 +44,15 @@ class OSMSentenceTransformerSimilarityDataset(Dataset):
             device="cpu",
         ).eval()
 
-        self.osm_blacklist = self._load_data(self.filter_osm_blacklist.path)
-        self.annotations = self._load_data("annotations.json")
+        self.osm_blacklist = load_data(self.filter_osm_blacklist.path)
+        self.annotations = load_data("annotations.json")
 
         self.keys = list(self.annotations.keys())
         self.split = split
         self.samples = []
         for key, value in self.annotations.items():
             if self.split in value["split"]:
-                content = self._load_content(self.path, key)
+                content = load_osm_content(self.path, key)
                 if content:
                     if self.change_position_value:
                         content = modify_position_value(content)
@@ -73,30 +73,6 @@ class OSMSentenceTransformerSimilarityDataset(Dataset):
                             entry["osm"] = value["osm"]
 
                         self.samples.append((key, entry))
-
-    @staticmethod
-    def _load_data(path: str) -> List[Dict]:
-        with open(path, "r") as file:
-            data = json.load(file)
-        return data
-
-    @staticmethod
-    def _load_content(path: str, key: str):
-        complete_path = os.path.join(
-            path,
-            "osm_data",
-            key.split("/")[1].split(".png")[0] + ".json",
-        )
-
-        content = None
-        if os.path.exists(complete_path):
-            with open(
-                complete_path,
-                "r",
-            ) as file:
-                content = json.load(file)
-
-        return content
 
     def __len__(self) -> int:
         return len(self.samples)

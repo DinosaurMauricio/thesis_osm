@@ -9,6 +9,11 @@ from torch import nn
 
 
 class ImageOSMSim(nn.Module):
+    """
+    This component is a prototype to obtain the features that
+    aligns the most between the OSM content and caption
+    """
+
     def __init__(self, config: OSMCAP_Config):
         super().__init__()
         self.config = config
