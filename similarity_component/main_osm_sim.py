@@ -2,11 +2,16 @@ import wandb
 import argparse
 import torch.optim as optim
 import os
+import sys
 
 from omegaconf import OmegaConf
 from transformers.utils import logging
 from transformers import AutoTokenizer
 from torch.optim.lr_scheduler import ConstantLR
+
+# Because this is not the main model but just a component we want to train
+# moved to a subfolder, to access the rest of the code we add this path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from dataset.OSMSimilarity import OSMSimilarityDataset
 
