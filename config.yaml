@@ -1,0 +1,148 @@
+name: open_street_sat
+device: "cuda:0" # Only useful when using a single device. If distributed_training is chosen, this is not effective, as all the available devices are gonna be used.
+device_count: ??? # set on run time
+
+dataset:
+  osm:
+    path: "/Datasets/image_captioning/OSMCaptioning"
+  ucm:
+    path: "/image_captioning/UCM_captions"
+
+similarity_output_dir: "similarity_trainings"
+output_dir: "trainings"
+
+optuna_early_stopping: 5
+
+# LLM Model configuration
+llm_models:
+  phi:
+    path : "microsoft/phi-2"
+    hidden_size: 2560
+    eos_token_id: 50256
+    pad_token_id: 50256
+    bos_token_id: 50256
+  gpt:
+    path: "gpt2"
+    hidden_size: 768
+    eos_token_id: 50256
+    pad_token_id: 50256
+    bos_token_id: 50256
+  
+  freeze: True
+
+vision_model:
+  clip:
+    path : "openai/clip-vit-base-patch32"
+    hidden_size: 768
+  remote:
+    path: "ViT-B/32" 
+    hidden_size: 768
+  vit:
+    path: "google/vit-base-patch16-224-in21k"
+    hidden_size: 768
+  freeze: True
+  use_only_cls_token: False
+
+projection:
+  type: "cross_attn" # Can be "mlp" or "cross_attn"
+  activation: "relu"
+  mlp:
+    n_layers: 2
+    bias: False
+    freeze: False
+  cross_attention:
+    freq: 2
+    dim_head: 16
+    dim_features: 128
+    heads: 8
+    ff_mult: 1
+  
+resampler:
+  dim: 768
+  depth: 4
+  dim_head: 16
+  heads: 8
+  num_latents: 16
+  ff_mult: 2
+  activation: "gelu"
+  trainable: True
+
+trainer:
+  batch_size: 8
+  epochs: 30
+  lr: 2e-3
+  weight_decay: 1e-1
+  
+  change_position_value: True
+  
+  embed_single_objects: True # If true embeds each osm entity in one vector, otherwise first concat everything is a string and then embeds
+  use_precomputed_embs: False
+
+  prob_img_input: 1.0 # Probability to include the image as input.
+  prob_osm_input: 1.0 # Probability to include osm data as input.
+  use_resampler: True # Use Perceiver Resampler
+  prob_osm_target: 0.0 # Probability to use osm enriched annotation as target.
+  force_osm_target: False
+  start_word: "gen" # This is the word that is used to control the generation of the model ("general" for general generation, "augmented" for augmented generation)
+  metric_to_monitor: "perplexity" # Option: "bleu4" or "perplexity"
+  evaluate_bleu: True
+  save_every_epoch: True # Trigger the saving of the checkpoint after every epoch
+
+  schedulers:
+    constant_lr:
+      factor: 0.5
+      total_iters: 4
+    onecyclelr:
+      max_lr: 0.1
+      anneal_strategy: "linear"
+    linear_schedule_with_warmup:
+      warmup_percentage: 0.1
+
+  image_osm_similarity:
+    enabled: True
+    top_k: 10 # top k words to be considered for the similarity
+    freeze: True
+    
+  max_features_length: 400  # this value is just used to constrain memory usage in cross_attn
+  quantize_language: True
+  quantize_vision: True
+  use_mixed_precision: True
+
+  sentence_embedding:
+    enabled: True # Use a sentence embedding model (sem) to convert the osm data into a vector.
+    model: "paraphrase-MiniLM-L6-v2"
+    dim: 384 # The embedding dimension in the sentence embedding model
+
+  # The list of the blacklisted keys in the OSM dataset
+  # values: 0 - blacklisted, 1 - not blacklisted, 2 - not blacklisted but can be blacklisted on run time if filter_name_keys is set to True
+  osm_blacklist:
+    enabled: True
+    # Filter the keys that contain naming information [eg keys. "name", "alt_name", "official_name"].  This is because the using general annotations
+    # the model most likely won't include the naming information (such as street names, etc.). So this should be only turned on when using the OSM data.
+    # Also, if turned to True, the model will only filter those that contain a value of "2" in the blacklist.json file.
+    filter_name_keys: True 
+    path: "blacklist.json"
+
+lora:
+  use_lora: False
+  r: 16
+  lora_alpha: 16
+  lora_dropout: 0.1
+  bias: "none"
+  task_type: "CAUSAL_LM"
+
+transformations:
+  random_erasing: # Random erasing augmentation on images
+    enabled: False
+    probability: 0.5
+  # this is more to test the model due to large sentences
+  short_sentences:
+    enabled: False
+  dropout:
+    enabled: True
+    p: 0.5
+  gaussian_noise:
+    enabled: False
+    mean: 0.0
+    std: 0.2
+    probability: 0.5

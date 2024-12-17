@@ -1,0 +1,945 @@
+"HFCS"
+Examples: ['Principal Arterial - Other', 'Principal Arterial - Other', 'Principal Arterial - Other', 'Principal Arterial - Other', 'Principal Arterial - Other']
+
+"abandoned:landuse"
+Examples: ['industrial']
+
+"abandoned:railway"
+Examples: ['rail', 'rail', 'rail', 'station', 'rail']
+
+"access"
+Examples: ['private', 'yes', 'yes', 'yes', 'customers']
+
+"advertising"
+Examples: ['billboard']
+
+"aerialway"
+Examples: ['pylon', 'chair_lift']
+
+"aerialway:occupancy"
+Examples: ['4']
+
+"aerodrome:type"
+Examples: ['public', 'regional', 'public', 'public', 'public']
+
+"aeroway"
+Examples: ['aerodrome', 'aerodrome', 'aerodrome', 'runway', 'taxiway']
+
+"air_conditioning"
+Examples: ['yes', 'yes', 'yes']
+
+"alt_name"
+Examples: ['State Highway 82', 'State Highway 82', 'State Highway 82', 'State Highway 82', 'Resurrection Catholic School']
+
+"amenity"
+Examples: ['parking', 'parking', 'shelter', 'restaurant', 'fast_food']
+
+"area"
+Examples: ['yes', 'no', 'yes', 'yes', 'yes']
+
+"area:highway"
+Examples: ['traffic_island', 'unclassified', 'traffic_island', 'traffic_island']
+
+"artwork_type"
+Examples: ['statue']
+
+"atm"
+Examples: ['yes', 'yes']
+
+"attraction"
+Examples: ['water_slide', 'water_slide', 'water_slide', 'water_slide', 'water_slide']
+
+"backrest"
+Examples: ['yes', 'no', 'no', 'yes', 'no']
+
+"barrier"
+Examples: ['traffic_island', 'retaining_wall', 'retaining_wall', 'retaining_wall', 'fence']
+
+"bench"
+Examples: ['yes', 'yes', 'yes', 'no', 'yes']
+
+"bicycle"
+Examples: ['permissive', 'permissive', 'designated', 'yes', 'designated']
+
+"bicycle_parking"
+Examples: ['rack', 'rack', 'wall_loops', 'wall_loops', 'wall_loops']
+
+"bin"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"boat"
+Examples: ['no', 'yes', 'no', 'yes', 'yes']
+
+"bollard"
+Examples: ['flexible', 'flexible', 'fixed']
+
+"brand"
+Examples: ['Residence Inn', 'State Farm', 'NAPA Auto Parts', 'Burger King', 'Starbucks']
+
+"brand:website"
+Examples: ['https://www.cvs.com/', 'https://www.cvs.com/']
+
+"brewery"
+Examples: ['yes']
+
+"bridge"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"bridge:structure"
+Examples: ['beam', 'beam', 'beam', 'beam', 'beam']
+
+"building"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"building:colour"
+Examples: ['lightgrey', 'lightgrey']
+
+"building:levels"
+Examples: ['2', '2', '2', '2', '2']
+
+"building:material"
+Examples: ['brick', 'concrete', 'concrete', 'concrete', 'concrete']
+
+"building:part"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"bunker_type"
+Examples: ['munitions', 'munitions', 'munitions', 'munitions', 'munitions']
+
+"bus"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"button_operated"
+Examples: ['no', 'no', 'yes', 'yes', 'yes']
+
+"cables"
+Examples: ['3', '3', '3', '3', '3']
+
+"camera:type"
+Examples: ['fixed', 'fixed']
+
+"canal"
+Examples: ['fixme']
+
+"canoe"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"capacity"
+Examples: ['11', '1', '1', '40', '100']
+
+"capacity:disabled"
+Examples: ['2', '11', '35', '5', '10']
+
+"check_date"
+Examples: ['2021-11-18', '2024-06-19', '2024-08-20', '2018-12-07', '2024-06-07']
+
+"clothes"
+Examples: ['western']
+
+"club"
+Examples: ['flying_club']
+
+"collection_times"
+Examples: ['Mo-Fr 10:30; Sa 10:30; Su off']
+
+"communication:mobile_phone"
+Examples: ['yes', 'yes', 'yes']
+
+"communication:radio"
+Examples: ['yes']
+
+"compressed_air"
+Examples: ['yes']
+
+"construction"
+Examples: ['industrial', 'industrial', 'residential', 'motorway', 'motorway']
+
+"content"
+Examples: ['water', 'fuel', 'fuel', 'fuel', 'fuel']
+
+"country"
+Examples: ['US']
+
+"county"
+Examples: ['Fairfield, CT', 'Fairfield, CT', 'Fairfield, CT', 'Fairfield, CT', 'Forsyth, GA']
+
+"couplings"
+Examples: ['3', '3', '3', '3', '3']
+
+"covered"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"craft"
+Examples: ['hvac', 'electronics_repair']
+
+"crop"
+Examples: ['vegetable', 'grass', 'grass', 'corn', 'dairy']
+
+"crossing"
+Examples: ['marked', 'uncontrolled', 'uncontrolled', 'uncontrolled', 'uncontrolled']
+
+"crossing:barrier"
+Examples: ['no', 'no']
+
+"crossing:island"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"crossing:markings"
+Examples: ['lines', 'lines', 'lines', 'lines', 'lines']
+
+"crossing_ref"
+Examples: ['zebra', 'zebra', 'island', 'island', 'zebra']
+
+"cuisine"
+Examples: ['burger', 'coffee_shop', 'juice', 'burger', 'tex-mex']
+
+"cycleway"
+Examples: ['shared_lane', 'lane', 'crossing', 'lane', 'lane']
+
+"cycleway:both"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"cycleway:left"
+Examples: ['lane', 'no', 'no', 'no', 'no']
+
+"cycleway:right"
+Examples: ['lane', 'lane', 'lane', 'lane', 'lane']
+
+"delivery"
+Examples: ['yes', 'yes', 'yes', 'yes', 'no']
+
+"demolished:building"
+Examples: ['yes', 'yes', 'yes', 'yes', 'school']
+
+"denomination"
+Examples: ['mormon', 'church_of_christ', 'methodist', 'roman_catholic', 'methodist']
+
+"denotation"
+Examples: ['urban']
+
+"departures_board"
+Examples: ['no', 'no', 'no', 'no']
+
+"depth"
+Examples: ['4']
+
+"design"
+Examples: ['h-frame', 'triangle', 'flag']
+
+"designation"
+Examples: ['Emergency Telephone', 'Stadium', 'Dining Hall', 'Pond']
+
+"destination"
+Examples: ['Waterbury', 'Downtown Torrington', 'Waterbury', 'Tampa', 'Parrish']
+
+"direction"
+Examples: ['forward', 'forward', 'backward', '90', 'both']
+
+"dispensing"
+Examples: ['yes', 'yes', 'yes', 'yes']
+
+"distance"
+Examples: ['2.4 km', '2.4 km', '81.68640006828']
+
+"disused"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"dog"
+Examples: ['leashed', 'leashed', 'leashed', 'yes']
+
+"drinking_water"
+Examples: ['yes', 'no', 'yes', 'yes']
+
+"drive_through"
+Examples: ['yes', 'no', 'yes', 'yes', 'yes']
+
+"electrified"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"embankment"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"emergency"
+Examples: ['fire_hydrant', 'fire_hydrant', 'fire_hydrant', 'fire_hydrant', 'fire_hydrant']
+
+"entrance"
+Examples: ['service', 'main', 'main', 'main', 'yes']
+
+"expressway"
+Examples: ['yes', 'yes', 'no', 'no', 'no']
+
+"fee"
+Examples: ['no', 'yes', 'yes', 'yes', 'varies']
+
+"female"
+Examples: ['no', 'yes', 'yes']
+
+"fence_type"
+Examples: ['chain_link', 'chain_link', 'chain_link', 'chain_link', 'chain_link']
+
+"fishing"
+Examples: ['yes']
+
+"floating"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"foot"
+Examples: ['yes', 'yes', 'yes', 'no', 'no']
+
+"footway"
+Examples: ['sidewalk', 'sidewalk', 'sidewalk', 'sidewalk', 'sidewalk']
+
+"ford"
+Examples: ['yes', 'yes']
+
+"frequency"
+Examples: ['60', '60', '60', '60', '60']
+
+"gauge"
+Examples: ['1435', '1435', '1435', '1435', '1435']
+
+"generator:method"
+Examples: ['combustion', 'photovoltaic', 'photovoltaic', 'photovoltaic', 'photovoltaic']
+
+"generator:source"
+Examples: ['gas', 'solar', 'solar', 'solar', 'solar']
+
+"generator:type"
+Examples: ['combined_cycle', 'solar_photovoltaic_panel', 'solar_photovoltaic_panel', 'solar_photovoltaic_panel', 'solar_photovoltaic_panel']
+
+"golf"
+Examples: ['fairway', 'bunker', 'bunker', 'green', 'cartpath']
+
+"golf_cart"
+Examples: ['designated', 'designated', 'designated', 'designated', 'yes']
+
+"handicap"
+Examples: ['17', '18', '3', '15', '4']
+
+"handrail"
+Examples: ['no', 'yes', 'yes', 'yes', 'yes']
+
+"hazard"
+Examples: ['children', 'children']
+
+"healthcare"
+Examples: ['pharmacy', 'yes', 'pharmacy', 'clinic', 'pharmacy']
+
+"heritage"
+Examples: ['2', '2', 'yes', '2', '2']
+
+"heritage:operator"
+Examples: ['nrhp', 'nrhp', 'nrhp', 'nrhp', 'nrhp']
+
+"heritage:website"
+Examples: ['https://npgallery.nps.gov/AssetDetail/NRIS/86001991', 'https://npgallery.nps.gov/AssetDetail/NRIS/86001991']
+
+"hgv"
+Examples: ['designated', 'designated', 'designated', 'designated', 'designated']
+
+"highway"
+Examples: ['residential', 'motorway', 'motorway_link', 'motorway', 'secondary']
+
+"historic"
+Examples: ['ruins', 'district', 'district', 'ruins', 'fort']
+
+"hoops"
+Examples: ['4', '2', '1', '2', '2']
+
+"horse"
+Examples: ['no', 'no', 'designated', 'no', 'designated']
+
+"iata"
+Examples: ['BDR', 'BDR', 'TPF', 'GNV', 'DXR']
+
+"incline"
+Examples: ['up', 'down', 'up', 'down', 'up']
+
+"indoor"
+Examples: ['no']
+
+"industrial"
+Examples: ['petroleum_terminal', 'petroleum_terminal', 'cooling', 'refinery', 'chemical']
+
+"information"
+Examples: ['board', 'board', 'guidepost', 'board']
+
+"intermittent"
+Examples: ['yes', 'yes', 'yes', 'yes', 'no']
+
+"internet_access"
+Examples: ['wlan', 'wlan', 'wlan', 'wlan', 'wlan']
+
+"internet_access:fee"
+Examples: ['customers', 'customers', 'no', 'no', 'no']
+
+"internet_access:ssid"
+Examples: ['- DEN Airport Free WiFi', '- DEN Airport Free WiFi', '- DEN Airport Free WiFi', '- DEN Airport Free WiFi']
+
+"isced:level"
+Examples: ['3']
+
+"junction"
+Examples: ['diamond', 'diamond', 'roundabout', 'roundabout', 'roundabout']
+
+"kerb"
+Examples: ['flush', 'flush', 'flush', 'flush', 'flush']
+
+"landuse"
+Examples: ['farmland', 'farmland', 'forest', 'farmland', 'grass']
+
+"lane_markings"
+Examples: ['yes', 'yes', 'no', 'no', 'yes']
+
+"lanes"
+Examples: ['2', '2', '2', '2', '2']
+
+"lanes:both_ways"
+Examples: ['1', '1', '1', '1', '1']
+
+"layer"
+Examples: ['1', '1', '1', '1', '1']
+
+"leaf_cycle"
+Examples: ['mixed', 'mixed', 'mixed', 'mixed', 'mixed']
+
+"leaf_type"
+Examples: ['mixed', 'mixed', 'broadleaved', 'broadleaved', 'broadleaved']
+
+"leisure"
+Examples: ['swimming_pool', 'golf_course', 'park', 'stadium', 'stadium']
+
+"length"
+Examples: ['1426', '1092', '1829', '549', '1829']
+
+"level"
+Examples: ['0', '0', '3', '3', '0']
+
+"line"
+Examples: ['busbar']
+
+"line_attachment"
+Examples: ['pin']
+
+"line_management"
+Examples: ['branch', 'straight']
+
+"lit"
+Examples: ['yes', 'yes', 'no', 'yes', 'yes']
+
+"location"
+Examples: ['outdoor', 'overground', 'overground', 'outdoor', 'outdoor']
+
+"locked"
+Examples: ['yes', 'yes']
+
+"male"
+Examples: ['no', 'yes', 'yes', 'yes']
+
+"man_made"
+Examples: ['manhole', 'manhole', 'manhole', 'manhole', 'manhole']
+
+"manhole"
+Examples: ['drain', 'drain', 'drain', 'drain', 'drain']
+
+"manufacturer"
+Examples: ['Grindline Skateparks']
+
+"material"
+Examples: ['concrete', 'concrete', 'concrete', 'concrete', 'wood']
+
+"maxspeed"
+Examples: ['55 mph', '55 mph', '60 mph', '60 mph', '30 mph']
+
+"maxspeed:advisory"
+Examples: ['30 mph', '50 mph', '25 mph', '25 mph', '55 mph']
+
+"maxspeed:backward"
+Examples: ['79 mph', '90 mph']
+
+"maxspeed:forward"
+Examples: ['90 mph', '79 mph']
+
+"maxspeed:hgv"
+Examples: ['70 mph', '70 mph', '65 mph', '65 mph', '65 mph']
+
+"maxspeed:variable"
+Examples: ['peak_traffic', 'peak_traffic']
+
+"maxweight:signed"
+Examples: ['no', 'no', 'no', 'no']
+
+"memorial"
+Examples: ['plaque']
+
+"microbrewery"
+Examples: ['yes']
+
+"military"
+Examples: ['airfield', 'airfield', 'airfield', 'bunker', 'bunker']
+
+"military_service"
+Examples: ['air_force', 'air_force', 'army', 'army', 'army']
+
+"minspeed"
+Examples: ['40 mph', '40 mph', '40 mph', '40 mph', '45 mph']
+
+"monitoring:water_level"
+Examples: ['yes']
+
+"moped"
+Examples: ['yes']
+
+"motor_vehicle"
+Examples: ['private', 'private', 'no', 'private', 'designated']
+
+"motorcar"
+Examples: ['private']
+
+"motorcycle"
+Examples: ['private', 'yes']
+
+"motorroad"
+Examples: ['yes', 'yes', 'yes']
+
+"mtb:scale"
+Examples: ['1', '2', '0']
+
+"mtb:scale:imba"
+Examples: ['2', '0']
+
+"name"
+Examples: ['Residence Inn Marriott', 'Beaver Dam Access Road', 'Bridgeport Avenue', 'Cedars Country Club', "Eagle's Beak Park"]
+
+"name:ar"
+Examples: ['نهر كولورادو', 'نهر الثعبان', 'نهر الثعبان', 'نهر إلينوي', 'نهر كولورادو']
+
+"name:arz"
+Examples: ['نهر كولورادو', 'نهر كولورادو', 'نهر كولورادو', 'نهر كولورادو', 'نهر كولورادو']
+
+"name:azb"
+Examples: ['کولورادو چایی', 'اسنیک چایی', 'اسنیک چایی', 'کولورادو چایی', 'کولورادو چایی']
+
+"name:be"
+Examples: ['Каларада', 'Каларада', 'Каларада', 'Каларада', 'Каларада']
+
+"name:cr"
+Examples: ['ᐊᓯᓃᓰᐱᐩ']
+
+"name:de"
+Examples: ['Colorado', 'Colorado', 'Colorado', 'Colorado', 'Colorado']
+
+"name:el"
+Examples: ['Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος']
+
+"name:en"
+Examples: ['Peter O Knight Airport', 'Williamson County Regional Airport', 'Eagle County Regional Airport', 'Clearwater River', 'Illinois River']
+
+"name:es"
+Examples: ['Río Buffalo', 'Río Buffalo', 'Río San Miguel', 'Río San Miguel', 'Aeropuerto Internacional de Yuma']
+
+"name:etymology:wikidata"
+Examples: ['Q35422406', 'Q35422406', 'Q8027', 'Q609950', 'Q609950']
+
+"name:fa"
+Examples: ['رود اسنیک', 'رود اسنیک', 'رود ایلینوی', 'آروادا']
+
+"name:fr"
+Examples: ['Snake', 'Snake', 'Rivière Illinois']
+
+"name:gl"
+Examples: ['Río Colorado', 'Río Colorado', 'Río Colorado', 'Río Colorado', 'Río Colorado']
+
+"name:grc"
+Examples: ['Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος', 'Κολωρᾶδος']
+
+"name:he"
+Examples: ['נהר אילינוי']
+
+"name:hy"
+Examples: ['Կոլորադո', 'Կոլորադո', 'Կոլորադո', 'Կոլորադո', 'Կոլորադո']
+
+"name:it"
+Examples: ['Fiume Snake', 'Fiume Snake']
+
+"name:kk"
+Examples: ['Колорадо', 'Колорадо', 'Колорадо', 'Колорадо', 'Колорадо']
+
+"name:ku"
+Examples: ['Çemê Kolorado', 'Çemê Kolorado', 'Çemê Kolorado', 'Çemê Kolorado', 'Çemê Kolorado']
+
+"name:lrc"
+Examples: ['آرڤادا']
+
+"name:lt"
+Examples: ['Koloradas', 'Sneikas', 'Sneikas', 'Koloradas', 'Koloradas']
+
+"name:oj"
+Examples: ['Asinii-ziibi', 'Ininwewi-ziibi']
+
+"name:pa"
+Examples: ['ਕੋਲੋਰਾਡੋ ਦਰਿਆ', 'ਕੋਲੋਰਾਡੋ ਦਰਿਆ', 'ਕੋਲੋਰਾਡੋ ਦਰਿਆ', 'ਕੋਲੋਰਾਡੋ ਦਰਿਆ', 'ਕੋਲੋਰਾਡੋ ਦਰਿਆ']
+
+"name:pt"
+Examples: ['Rio Colorado', 'Rio Colorado', 'Rio Colorado', 'Rio Colorado', 'Rio Colorado']
+
+"name:ru"
+Examples: ['Йель-Боул', 'Колорадо', 'Снейк', 'Снейк', 'Колорадо']
+
+"name:sr"
+Examples: ['Колорадо', 'Колорадо', 'Колорадо', 'Колорадо', 'Колорадо']
+
+"name:uk"
+Examples: ['Колорадо', 'Снейк', 'Снейк', 'Колорадо', 'Колорадо']
+
+"name:ur"
+Examples: ['یوما انٹرنیشنل ہوائی اڈا', 'دریائے کولوراڈو', 'دریائے اسنیک', 'دریائے اسنیک', 'یوما انٹرنیشنل ہوائی اڈا']
+
+"natural"
+Examples: ['tree', 'tree', 'tree', 'tree', 'tree']
+
+"navigationaid"
+Examples: ['vasi']
+
+"network"
+Examples: ['Rock Region Metro', 'Priest Lake Nordic/Golf Course', 'Priest Lake Nordic/Golf Course', 'US National Transit Database id is 90032', 'US National Transit Database id is 90032']
+
+"network:wikidata"
+Examples: ['Q5060353', 'Q3553869', 'Q3553869', 'Q3553869', 'Q3553869']
+
+"noname"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"office"
+Examples: ['insurance', 'yes', 'yes', 'accountant', 'insurance']
+
+"official_name"
+Examples: ['Residence Inn by Marriott', 'General Samuel Jaskilka Highway', 'General Samuel Jaskilka Highway', 'Starbucks Coffee', 'Firestone Complete Auto Care']
+
+"old_name"
+Examples: ['Alachua Army Air Field', 'Country Club of Woodbridge', 'Oak Lane Country Club', 'Osceola Boulevard', 'Sunshine State Parkway']
+
+"oneway"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"oneway:bicycle"
+Examples: ['no']
+
+"opening_date"
+Examples: ['2024-01-17', '2024-01-17', '2021-08-01']
+
+"opening_hours"
+Examples: ['Mo-Th 06:00-24:00; Fr-Sa 05:30-01:00; Su 06:00-24:00', 'Mo-Sa 10:00-18:00; Su 12:00-17:00', 'Mo-Sa 05:00-23:00; Su 05:00-22:00', 'Mo-Th 07:00-03:00; Fr-Sa 07:00-04:00; Su 07:00-03:00', '24/7']
+
+"opening_hours:signed"
+Examples: ['no']
+
+"operator"
+Examples: ['Marriott', 'Forsyth County', 'Tropicana Field', 'City of Bridgeport', 'City of Bridgeport']
+
+"operator:type"
+Examples: ['government', 'public', 'public', 'public', 'public']
+
+"operator:website"
+Examples: ['https://www.usps.com']
+
+"outdoor_seating"
+Examples: ['yes']
+
+"ownership"
+Examples: ['state', 'state', 'state', 'state', 'state']
+
+"par"
+Examples: ['5', '3', '3', '3', '5']
+
+"parking"
+Examples: ['surface', 'surface', 'surface', 'surface', 'surface']
+
+"parking:both"
+Examples: ['no']
+
+"parking_space"
+Examples: ['disabled', 'disabled', 'disabled', 'disabled', 'disabled']
+
+"passenger_information_display"
+Examples: ['no', 'no', 'no']
+
+"pipeline"
+Examples: ['substation', 'substation', 'substation', 'substation', 'substation']
+
+"piste:difficulty"
+Examples: ['easy', 'easy', 'novice', 'advanced', 'intermediate']
+
+"piste:grooming"
+Examples: ['classic;skating', 'classic;skating']
+
+"piste:type"
+Examples: ['nordic', 'nordic', 'downhill', 'downhill', 'downhill']
+
+"place"
+Examples: ['hamlet', 'neighbourhood', 'neighbourhood', 'neighbourhood', 'neighbourhood']
+
+"placement"
+Examples: ['right_of:2', 'right_of:2', 'right_of:2', 'right_of:2', 'right_of:1']
+
+"plant:method"
+Examples: ['combustion', 'photovoltaic', 'combustion', 'photovoltaic', 'photovoltaic']
+
+"plant:source"
+Examples: ['gas', 'biomass', 'solar', 'gas', 'solar']
+
+"playground"
+Examples: ['map']
+
+"position"
+Examples: ['center', 'center right', 'center right', 'center right', 'center left']
+
+"power"
+Examples: ['pole', 'pole', 'pole', 'pole', 'tower']
+
+"product"
+Examples: ['cottonseed_processing']
+
+"protect_class"
+Examples: ['2', '2', '2', '2', '5']
+
+"public_transport"
+Examples: ['platform', 'platform', 'platform', 'stop_position', 'stop_position']
+
+"railway"
+Examples: ['rail', 'abandoned', 'level_crossing', 'rail', 'rail']
+
+"railway:position"
+Examples: ['mi:275.0', 'mi:627.0', 'mi:627.0']
+
+"railway:track_ref"
+Examples: ['5', '5', '4', '6', '3']
+
+"religion"
+Examples: ['christian', 'christian', 'christian', 'none', 'christian']
+
+"roof:colour"
+Examples: ['grey', 'lightgrey', 'lightgrey']
+
+"roof:levels"
+Examples: ['0', '0', '0', '0', '0']
+
+"roof:shape"
+Examples: ['dome', 'skillion', 'dome', 'gabled', 'gabled']
+
+"route"
+Examples: ['foot']
+
+"sac_scale"
+Examples: ['hiking', 'hiking', 'hiking', 'hiking', 'mountain_hiking']
+
+"salt"
+Examples: ['no', 'yes', 'no', 'no', 'no']
+
+"sanitary_dump_station"
+Examples: ['yes']
+
+"seamark:harbour:category"
+Examples: ['marina', 'marina']
+
+"seamark:type"
+Examples: ['bridge', 'small_craft_facility', 'harbour', 'bridge', 'bridge']
+
+"seasonal"
+Examples: ['yes', 'no', 'no', 'no', 'no']
+
+"second_hand"
+Examples: ['only']
+
+"segregated"
+Examples: ['no', 'yes', 'no', 'no', 'no']
+
+"service"
+Examples: ['driveway', 'parking_aisle', 'parking_aisle', 'drive-through', 'parking_aisle']
+
+"service:bicycle:pump"
+Examples: ['yes']
+
+"service:bicycle:repair"
+Examples: ['yes']
+
+"shelter"
+Examples: ['no', '1', 'yes', 'yes', 'yes']
+
+"shelter_type"
+Examples: ['picnic_shelter', 'gazebo', 'picnic_shelter', 'pavilion', 'picnic_shelter']
+
+"shop"
+Examples: ['sports', 'ticket', 'car_parts', 'car_repair', 'beauty']
+
+"short_name"
+Examples: ['USPS', 'Carlton Reserve', 'Panera', 'Sardy Field', 'SW 27th Av & SW 6th St']
+
+"shoulder"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"sidewalk"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"sidewalk:both"
+Examples: ['separate', 'separate', 'no', 'no', 'no']
+
+"sidewalk:left"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"sidewalk:right"
+Examples: ['separate', 'separate', 'separate', 'separate', 'separate']
+
+"sidewalk:right:surface"
+Examples: ['concrete', 'concrete', 'concrete', 'concrete', 'concrete']
+
+"smoking"
+Examples: ['no', 'outside', 'outside']
+
+"smoothness"
+Examples: ['bad', 'bad', 'bad', 'good', 'excellent']
+
+"social_facility"
+Examples: ['nursing_home']
+
+"social_facility:for"
+Examples: ['senior']
+
+"species"
+Examples: ['Tilia cordata']
+
+"sport"
+Examples: ['baseball', 'baseball', 'baseball', 'baseball', 'baseball']
+
+"start_date"
+Examples: ['1984', '2004-02', '1963', '1963', '1963']
+
+"step_count"
+Examples: ['6', '3']
+
+"substance"
+Examples: ['fuel', 'fuel', 'fuel', 'oil']
+
+"substation"
+Examples: ['industrial', 'pumping', 'industrial', 'transmission']
+
+"supervised"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"support"
+Examples: ['pole', 'pole', 'pole', 'pole', 'pole']
+
+"surface"
+Examples: ['asphalt', 'asphalt', 'asphalt', 'asphalt', 'unpaved']
+
+"surveillance"
+Examples: ['outdoor', 'outdoor']
+
+"surveillance:type"
+Examples: ['camera', 'camera']
+
+"survey:date"
+Examples: ['2021-08-08', '2019-08-17', '2019-08-17', '2019-08-17', '2019-08-17']
+
+"swimming_pool"
+Examples: ['inground', 'inground', 'inground', 'inground', 'inground']
+
+"tactile_paving"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"takeaway"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"tidal"
+Examples: ['no', 'yes', 'yes', 'yes', 'no']
+
+"toilets:wheelchair"
+Examples: ['yes', 'yes']
+
+"toll"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"tourism"
+Examples: ['hotel', 'hotel', 'hotel', 'hotel', 'hotel']
+
+"tower:construction"
+Examples: ['lattice', 'lattice', 'lattice']
+
+"tower:type"
+Examples: ['communication', 'lighting', 'lighting', 'lighting', 'lighting']
+
+"tracktype"
+Examples: ['grade3', 'grade2', 'grade2', 'grade5', 'grade5']
+
+"traffic_calming"
+Examples: ['bump', 'bump', 'median', 'median', 'bump']
+
+"traffic_sign"
+Examples: ['hazard', 'maxspeed', 'US:R1-1;US:R5-1', 'US:R1-1;US:R5-1', 'US:R5-1']
+
+"traffic_signals:sound"
+Examples: ['yes', 'yes', 'yes', 'yes', 'yes']
+
+"traffic_signals:vibration"
+Examples: ['no', 'no', 'no', 'no', 'no']
+
+"trail_visibility"
+Examples: ['no', 'no', 'good', 'good', 'excellent']
+
+"transformer"
+Examples: ['main', 'generator']
+
+"tunnel"
+Examples: ['building_passage', 'yes', 'yes', 'yes', 'yes']
+
+"turn"
+Examples: ['left', 'merge_to_left']
+
+"unisex"
+Examples: ['yes']
+
+"usage"
+Examples: ['branch', 'main', 'branch', 'main', 'main']
+
+"utility"
+Examples: ['power', 'power', 'power', 'power']
+
+"vending"
+Examples: ['parking_tickets', 'parking_tickets', 'parking_tickets', 'parking_tickets', 'parking_tickets']
+
+"voltage"
+Examples: ['230000', '115000', '230000', '69000', '230000']
+
+"voltage:primary"
+Examples: ['115000', '230000']
+
+"voltage:secondary"
+Examples: ['230000']
+
+"wall"
+Examples: ['yes', 'yes', 'noise_barrier', 'stone']
+
+"waste"
+Examples: ['trash', 'trash', 'trash']
+
+"water"
+Examples: ['reservoir', 'river', 'river', 'reservoir', 'pond']
+
+"water_source"
+Examples: ['main', 'main', 'main', 'main', 'main']
+
+"waterway"
+Examples: ['drain', 'stream', 'stream', 'dam', 'stream']
+
+"wetland"
+Examples: ['saltmarsh', 'saltmarsh', 'swamp', 'marsh', 'swamp']
+
+"wheelchair"
+Examples: ['yes', 'yes', 'yes', 'yes', 'limited']
+
+"wholesale"
+Examples: ['car']
+
+"width"
+Examples: ['30', '30', "10'", '2.6', '30']
+
