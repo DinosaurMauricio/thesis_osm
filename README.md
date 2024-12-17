@@ -1,15 +1,29 @@
 # Exploring OpenStreetMap Data for Enriched Remote Sensing Image Captioning
 
-## Overview
-
 This project explores using Volunteered Geographic Information (VGI) from OpenStreetMap (OSM) to create more detailed captions for remote sensing images.
 
-We built a custom dataset combining images, OSM geographic data, and captions. Our model merges visual information with OSM data using SoTA architectures and GPT-2 for generating text.
+## Abstract
+This work investigates the potential of integrating VGI from OpenStreetMap to generate more detailed and contextually relevant captions for remote sensing images. The study introduces a custom dataset that combines images, OSM data, and detailed captions. A model inspired by state-of-the-art multi-modal architectures is built, trained, and tested, using a Perceiver Resampler and Gated Cross-Attention layers to merge visual and OSM data during caption generation. The text generation component employs a pre-trained GPT-2 architecture.
 
-To handle varying amounts of OSM data, we tested methods to select the most relevant info and tried different ways to represent the data.
+The research also addresses challenges related to the variability in VGI data by designing and experimenting with a similarity measure to select the most relevant OSM data for each image. A one-hot encoding strategy is also explored to provide a more structured data representation.
 
-Results show the model can generate meaningful captions, but challenges remain due to noisy and biased VGI data, limited samples, and overfitting.
+While quantitative results showed limited performance differences, qualitative analyses highlighted the model's ability to generate insightful captions. The study revealed challenges such as data biases, variability, and overfitting, which led to inaccuracies in generated captions. The findings underscore the need for improvements in both dataset quality and model design for future research.
 
-This work highlights the promise of VGI for improving image captions and points to future work needed to overcome current limitations.
+## Dataset
+A novel dataset was created for this work, combining remote sensing images, detailed captions, and metadata from OpenStreetMap. This dataset was built using images from the NAIP program in the US, due to the extensive and frequently updated OSM data in the region. The dataset consists of 1568 images with corresponding OSM data.
 
----
+## Model Architecture
+The proposed model is a multi-modal architecture that integrates visual information from remote sensing images along textual information and data from OSM.
+
+* **Encoder**: The model uses the visual backbone of pre-trained CLIP or RemoteCLIP models to extract meaningful image embeddings.
+* **Decoder**: A pre-trained GPT-2 architecture is used for text generation.
+* **Cross-Modal Interaction**: A Perceiver Resampler and interleaved Gated Cross-Attention layers are used to merge the visual and OSM information before it is passed to the LLM.
+
+## Experiments
+Experiments were conducted using two datasets: the UCM dataset (images and text only) and the custom OSM dataset. The model's performance was evaluated using standard metrics such as BLEU.
+
+Key findings from the experiments include:
+* The model showed an ability to generate insightful captions.
+* The VGI data needs to be more refined and highlights the need for a more robust method of selecting and filtering relevant OSM data. Yet in some experiments OSM details were included on the generated captions not included on the original captions.
+* Overfitting was a significant challenge due to the limited number of labeled samples.
+* The Perceiver Resampler and Gated Cross-Attention layers were efficient in enabling the model to learn high-quality relationships between the image and smaller captions, as proven by the UCM dataset, but the OSM data needs to be further refined to improve its integration.
